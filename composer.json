@@ -38,6 +38,7 @@
     },
     "require": {
         "php": "^7.1",
+        "ext-json": "^1.5",
         "monolog/monolog": "^1.23",
         "symfony/dotenv": "^4.1",
         "zendframework/zend-component-installer": "^2.1.1",
