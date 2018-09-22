@@ -6,8 +6,7 @@ use Zend\ConfigAggregator\ConfigAggregator;
 
 return [
     ConfigAggregator::ENABLE_CACHE => true,
-
-    'debug' => false,
+    'debug' => (bool)getenv('APP_DEBUG'),
 
     'zend-expressive' => [
         'error_handler' => [

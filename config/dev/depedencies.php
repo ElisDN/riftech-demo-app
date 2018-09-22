@@ -16,8 +16,6 @@ use Zend\Expressive\Middleware\ErrorResponseGenerator;
 
 return [
     'dependencies' => [
-        'invokables' => [
-        ],
         'factories'  => [
             ErrorResponseGenerator::class       => Container\WhoopsErrorResponseGeneratorFactory::class,
             'Zend\Expressive\Whoops'            => Container\WhoopsFactory::class,
