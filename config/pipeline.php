@@ -17,6 +17,7 @@ use Zend\Stratigility\Middleware\ErrorHandler;
 
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container) : void {
     $app->pipe(ErrorHandler::class);
+    $app->pipe(App\Infrastructure\Framework\Middleware\ResponseLoggerMiddleware::class);
     $app->pipe(ServerUrlMiddleware::class);
     $app->pipe(RouteMiddleware::class);
 
