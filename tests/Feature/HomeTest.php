@@ -15,6 +15,15 @@ class HomeTest extends WebTestCase
 
         $data = json_decode($content, true);
 
-        self::assertEquals(['name' => 'Api'], $data);
+        self::assertEquals([
+            'name' => 'Api',
+            'links' => [
+                [
+                    'rel' => 'self',
+                    'url' => '/',
+                    'type' => 'GET',
+                ],
+            ],
+        ], $data);
     }
 }

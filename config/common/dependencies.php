@@ -6,6 +6,8 @@ return [
     'dependencies' => [
         'aliases' => [],
         'invokables' => [],
-        'factories'  => [],
+        'abstract_factories'  => [
+            Zend\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory::class,
+        ],
     ],
 ];
