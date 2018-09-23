@@ -13,6 +13,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\ServerRequest;
+use Zend\Diactoros\Stream;
 use Zend\Diactoros\Uri;
 use Zend\Expressive\Application;
 use Zend\Expressive\MiddlewareFactory;
@@ -24,12 +25,24 @@ class WebTestCase extends TestCase
         return $this->method($uri, 'GET');
     }
 
-    protected function method(string $uri, $method): ResponseInterface
+    protected function post(string $uri, array $params = []): ResponseInterface
     {
+        return $this->method($uri, 'POST', $params);
+    }
+
+    protected function method(string $uri, $method, array $params = []): ResponseInterface
+    {
+        $body = new Stream('php://temp', 'r+');
+        $body->write(json_encode($params));
+        $body->rewind();
+
         return $this->request(
             (new ServerRequest())
+                ->withHeader('Content-Type', 'application/json')
+                ->withHeader('Accept', 'application/json')
                 ->withUri(new Uri('http://test' . $uri))
                 ->withMethod($method)
+                ->withBody($body)
         );
     }
 
