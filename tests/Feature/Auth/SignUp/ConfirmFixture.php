@@ -6,32 +6,27 @@ namespace Test\Feature\Auth\SignUp;
 
 use App\Model\User\Entity\User\ConfirmToken;
 use App\Model\User\Entity\User\Email;
-use App\Model\User\Entity\User\User;
-use App\Model\User\Entity\User\UserId;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Test\Builder\User\UserBuilder;
 
 class ConfirmFixture extends AbstractFixture
 {
     public function load(ObjectManager $manager): void
     {
-        $user = new User(
-            UserId::next(),
-            $now = new \DateTimeImmutable(),
-            new Email('confirm@example.com'),
-            'password_hash',
-            new ConfirmToken('token', new \DateTimeImmutable('+1 day'))
-        );
+        $user = (new UserBuilder())
+            ->withDate($now = new \DateTimeImmutable())
+            ->withEmail(new Email('confirm@example.com'))
+            ->withConfirmToken(new ConfirmToken('token', $now->modify('+1 day')))
+            ->build();
 
         $manager->persist($user);
 
-        $expired = new User(
-            UserId::next(),
-            $now = new \DateTimeImmutable(),
-            new Email('expired@example.com'),
-            'password_hash',
-            new ConfirmToken('token', new \DateTimeImmutable('-1 day'))
-        );
+        $expired = (new UserBuilder())
+            ->withDate($now = new \DateTimeImmutable())
+            ->withEmail(new Email('expired@example.com'))
+            ->withConfirmToken(new ConfirmToken('token', $now->modify('-1 day')))
+            ->build();
 
         $manager->persist($expired);
 
