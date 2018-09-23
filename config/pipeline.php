@@ -17,6 +17,7 @@ use Zend\Stratigility\Middleware\ErrorHandler;
 
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container) : void {
     $app->pipe(ErrorHandler::class);
+    $app->pipe(Zend\Expressive\Helper\BodyParams\BodyParamsMiddleware::class);
     $app->pipe(App\Infrastructure\Framework\Middleware\ResponseLoggerMiddleware::class);
     $app->pipe(App\Http\Middleware\DomainExceptionHandler::class);
     $app->pipe(App\Http\Middleware\ValidationExceptionHandler::class);
