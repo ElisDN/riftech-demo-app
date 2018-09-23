@@ -4,23 +4,20 @@ declare(strict_types=1);
 
 namespace App\Http\Action\Auth\SignUp;
 
-use App\Model\User\UseCase\SignUp\Request\Command;
-use App\Model\User\UseCase\SignUp\Request\Handler;
+use App\Model\User\UseCase\SignUp\Confirm\Command;
+use App\Model\User\UseCase\SignUp\Confirm\Handler;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response\JsonResponse;
-use Zend\Expressive\Helper\UrlHelper;
 
-class RequestAction implements RequestHandlerInterface
+class ConfirmAction implements RequestHandlerInterface
 {
     private $handler;
-    private $url;
 
-    public function __construct(Handler $handler, UrlHelper $url)
+    public function __construct(Handler $handler)
     {
         $this->handler = $handler;
-        $this->url = $url;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -30,19 +27,18 @@ class RequestAction implements RequestHandlerInterface
         $command = new Command();
 
         $command->email = $body['email'] ?? '';
-        $command->password = $body['password'] ?? '';
+        $command->token = $body['token'] ?? '';
 
         $this->handler->handle($command);
 
         return new JsonResponse([
-            'email' => $command->email,
             'links' => [
                 [
-                    'rel' => 'confirm',
-                    'url' => $this->url->generate('auth.signup.confirm'),
-                    'type' => 'POST',
+                    'rel' => 'profile',
+                    'url' => '/profile',
+                    'type' => 'GET',
                 ],
             ],
-        ], 201);
+        ]);
     }
 }

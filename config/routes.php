@@ -12,5 +12,6 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->get('/', Action\HomeAction::class, 'home');
 
     $app->post('/auth/signup', Action\Auth\SignUp\RequestAction::class, 'auth.signup');
+    $app->post('/auth/signup/confirm', Action\Auth\SignUp\ConfirmAction::class, 'auth.signup.confirm');
 
 };
