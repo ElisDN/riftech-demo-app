@@ -1,5 +1,7 @@
 <?php
 
+use App\Infrastructure\Doctrine\Type;
+
 return [
     'dependencies' => [
         'factories'  => [
@@ -35,6 +37,10 @@ return [
                 'cache' => 'filesystem',
                 'paths' => ['src/Model/User/Entity'],
             ],
+        ],
+        'types' => [
+            Type\User\UserIdType::NAME => Type\User\UserIdType::class,
+            Type\User\EmailType::NAME => Type\User\EmailType::class,
         ],
         'cache' => [
             'filesystem' => [
