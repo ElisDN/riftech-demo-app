@@ -26,12 +26,7 @@ class ConfirmAction implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $body = $request->getParsedBody();
-
-        $command = new Command();
-
-        $command->email = $body['email'] ?? '';
-        $command->token = $body['token'] ?? '';
+        $command = $this->deserialize($request);
 
         if ($errors = $this->validator->validate($command)) {
             throw new ValidationException($errors);
@@ -48,5 +43,14 @@ class ConfirmAction implements RequestHandlerInterface
                 ],
             ],
         ]);
+    }
+
+    private function deserialize(ServerRequestInterface $request): Command
+    {
+        $data = $request->getParsedBody();
+        $command = new Command();
+        $command->email = $data['email'] ?? '';
+        $command->token = $data['token'] ?? '';
+        return $command;
     }
 }
