@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Action\Auth\SignUp;
 
+use App\Http\Validator\Validator;
 use App\Model\User\UseCase\SignUp\Request\Command;
 use App\Model\User\UseCase\SignUp\Request\Handler;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zend\Diactoros\Response\JsonResponse;
 use Zend\Expressive\Helper\UrlHelper;
 
@@ -19,7 +19,7 @@ class RequestAction implements RequestHandlerInterface
     private $url;
     private $validator;
 
-    public function __construct(Handler $handler, UrlHelper $url, ValidatorInterface $validator)
+    public function __construct(Handler $handler, UrlHelper $url, Validator $validator)
     {
         $this->handler = $handler;
         $this->url = $url;
@@ -35,13 +35,8 @@ class RequestAction implements RequestHandlerInterface
         $command->email = $body['email'] ?? '';
         $command->password = $body['password'] ?? '';
 
-        $violations = $this->validator->validate($command);
-        if ($violations->count() > 0) {
-            $errors = [];
-            foreach ($violations as $violation) {
-                $errors[$violation->getPropertyPath()] = $violation->getMessage();
-            }
-            return new JsonResponse(['errors' => $errors], 400);
+        if ($errors = $this->validator->validate($command)) {
+            return new JsonResponse(['errors' => $errors->toArray()], 400);
         }
 
         $this->handler->handle($command);
