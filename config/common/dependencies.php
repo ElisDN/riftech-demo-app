@@ -9,5 +9,8 @@ return [
         'abstract_factories'  => [
             Zend\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory::class,
         ],
+        'factories'  => [
+            Symfony\Component\Validator\Validator\ValidatorInterface::class => App\Infrastructure\ValidatorFactory::class,
+        ],
     ],
 ];
