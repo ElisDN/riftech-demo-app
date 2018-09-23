@@ -30,6 +30,7 @@ return [
                 'class' => Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain::class,
                 'drivers' => [
                     'App\Model\User\Entity' => 'user_entities',
+                    'App\Model\OAuth\Entity' => 'oauth_entities',
                 ],
             ],
             'user_entities' => [
@@ -37,10 +38,17 @@ return [
                 'cache' => 'filesystem',
                 'paths' => ['src/Model/User/Entity'],
             ],
+            'oauth_entities' => [
+                'class' => Doctrine\ORM\Mapping\Driver\AnnotationDriver::class,
+                'cache' => 'filesystem',
+                'paths' => ['src/Model/OAuth/Entity'],
+            ],
         ],
         'types' => [
             Type\User\UserIdType::NAME => Type\User\UserIdType::class,
             Type\User\EmailType::NAME => Type\User\EmailType::class,
+            Type\OAuth\ClientType::NAME => Type\OAuth\ClientType::class,
+            Type\OAuth\ScopesType::NAME => Type\OAuth\ScopesType::class,
         ],
         'cache' => [
             'filesystem' => [

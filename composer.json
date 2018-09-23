@@ -41,6 +41,7 @@
         "ext-json": "^1.5",
         "dasprid/container-interop-doctrine": "^1.1",
         "doctrine/migrations": "^1.8",
+        "league/oauth2-server": "^7.2",
         "monolog/monolog": "^1.23",
         "ramsey/uuid": "^3.8",
         "symfony/dotenv": "^4.1",

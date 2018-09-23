@@ -16,6 +16,9 @@ return [
             'user_entities' => [
                 'cache' => 'array',
             ],
+            'oauth_entities' => [
+                'cache' => 'array',
+            ],
         ],
     ],
 ];

@@ -6,3 +6,5 @@ coveralls-upload.json
 phpunit.xml
 vendor/
 .env
+/private.key
+/public.key

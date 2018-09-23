@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use League\OAuth2\Server\Middleware\ResourceServerMiddleware;
 use Psr\Container\ContainerInterface;
 use Zend\Expressive\Application;
 use Zend\Expressive\Handler\NotFoundHandler;
@@ -13,6 +14,7 @@ use Zend\Expressive\Router\Middleware\ImplicitHeadMiddleware;
 use Zend\Expressive\Router\Middleware\ImplicitOptionsMiddleware;
 use Zend\Expressive\Router\Middleware\MethodNotAllowedMiddleware;
 use Zend\Expressive\Router\Middleware\RouteMiddleware;
+use Zend\Stratigility\Middleware\DoublePassMiddlewareDecorator;
 use Zend\Stratigility\Middleware\ErrorHandler;
 
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container) : void {
@@ -22,6 +24,9 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->pipe(App\Http\Middleware\DomainExceptionHandler::class);
     $app->pipe(App\Http\Middleware\ValidationExceptionHandler::class);
     $app->pipe(ServerUrlMiddleware::class);
+
+    $app->pipe('/profile', new DoublePassMiddlewareDecorator($container->get(ResourceServerMiddleware::class)));
+
     $app->pipe(RouteMiddleware::class);
 
     $app->pipe(ImplicitHeadMiddleware::class);
