@@ -6,7 +6,12 @@ namespace App\Model\Auction\Entity\Lot;
 
 use App\Model\Auction\Entity\Member\Member;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="auction_lots")
+ */
 class Lot
 {
     private const STATUS_DRAFT = 'draft';
@@ -16,54 +21,71 @@ class Lot
 
     /**
      * @var LotId
+     * @ORM\Column(type="auction_lot_id")
+     * @ORM\Id
      */
     private $id;
     /**
      * @var Member
+     * @ORM\ManyToOne(targetEntity="App\Model\Auction\Entity\Member\Member")
+     * @ORM\JoinColumn(name="member_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $member;
     /**
      * @var \DateTimeImmutable
+     * @ORM\Column(type="datetime_immutable", name="create_date")
      */
     private $createDate;
     /**
      * @var Content
+     * @ORM\Embedded(class="Content")
      */
     private $content;
     /**
      * @var Price
+     * @ORM\Embedded(class="Price")
      */
     private $price;
     /**
      * @var string
+     * @ORM\Column(type="string", length=16)
      */
     private $status;
     /**
      * @var \DateTimeImmutable|null
+     * @ORM\Column(type="datetime_immutable", nullable=true, name="on_moderation_date")
      */
     private $onModerationDate;
     /**
      * @var \DateTimeImmutable|null
+     * @ORM\Column(type="datetime_immutable", nullable=true, name="publish_date")
      */
     private $publishDate;
     /**
      * @var \DateTimeImmutable|null
+     * @ORM\Column(type="datetime_immutable", nullable=true, name="update_date")
      */
     private $updateDate;
     /**
      * @var string|null
+     * @ORM\Column(type="string", nullable=true, name="reject_reason")
      */
     private $rejectReason;
     /**
      * @var ArrayCollection|Bid[]
+     * @ORM\OneToMany(targetEntity="Bid", mappedBy="lot", orphanRemoval=true, cascade={"persist"})
+     * @ORM\OrderBy({"date" = "ASC"})
      */
     private $bids;
     /**
      * @var \DateTimeImmutable|null
+     * @ORM\Column(type="datetime_immutable", nullable=true, name="close_date")
      */
     private $closeDate;
     /**
      * @var Bid|null
+     * @ORM\ManyToOne(targetEntity="Bid")
+     * @ORM\JoinColumn(name="winner_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     private $winner;
 

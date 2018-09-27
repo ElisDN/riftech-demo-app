@@ -31,6 +31,7 @@ return [
                 'drivers' => [
                     'App\Model\User\Entity' => 'user_entities',
                     'App\Model\OAuth\Entity' => 'oauth_entities',
+                    'App\Model\Auction\Entity' => 'auction_entities',
                 ],
             ],
             'user_entities' => [
@@ -43,12 +44,20 @@ return [
                 'cache' => 'filesystem',
                 'paths' => ['src/Model/OAuth/Entity'],
             ],
+            'auction_entities' => [
+                'class' => Doctrine\ORM\Mapping\Driver\AnnotationDriver::class,
+                'cache' => 'filesystem',
+                'paths' => ['src/Model/Auction/Entity'],
+            ],
         ],
         'types' => [
             Type\User\UserIdType::NAME => Type\User\UserIdType::class,
             Type\User\EmailType::NAME => Type\User\EmailType::class,
             Type\OAuth\ClientType::NAME => Type\OAuth\ClientType::class,
             Type\OAuth\ScopesType::NAME => Type\OAuth\ScopesType::class,
+            Type\Auction\LotIdType::NAME => Type\Auction\LotIdType::class,
+            Type\Auction\MemberIdType::NAME => Type\Auction\MemberIdType::class,
+            Type\Auction\MemberEmailType::NAME => Type\Auction\MemberEmailType::class,
         ],
         'cache' => [
             'filesystem' => [

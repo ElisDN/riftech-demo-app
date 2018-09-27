@@ -4,12 +4,25 @@ declare(strict_types=1);
 
 namespace App\Model\Auction\Entity\Member;
 
+use Doctrine\ORM\Mapping as ORM;
 use Webmozart\Assert\Assert;
 
+/**
+ * @ORM\Embeddable
+ */
 class Name
 {
+    /**
+     * @ORM\Column(type="string")
+     */
     private $last;
+    /**
+     * @ORM\Column(type="string")
+     */
     private $first;
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
     private $middle;
 
     public function __construct(string $last, string $first, string $middle)

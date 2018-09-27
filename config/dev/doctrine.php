@@ -19,6 +19,9 @@ return [
             'oauth_entities' => [
                 'cache' => 'array',
             ],
+            'auction_entities' => [
+                'cache' => 'array',
+            ],
         ],
     ],
 ];

@@ -4,18 +4,28 @@ declare(strict_types=1);
 
 namespace App\Model\Auction\Entity\Member;
 
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="auction_members")
+ */
 class Member
 {
     /**
      * @var MemberId
+     * @ORM\Column(type="auction_member_id")
+     * @ORM\Id
      */
     private $id;
     /**
      * @var Name
+     * @ORM\Embedded(class="Name")
      */
     private $name;
     /**
      * @var Email
+     * @ORM\Column(type="auction_member_email")
      */
     private $email;
 
