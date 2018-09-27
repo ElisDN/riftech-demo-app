@@ -37,4 +37,29 @@ class Lot
         $this->content = $content;
         $this->price = $price;
     }
+
+    public function getId(): LotId
+    {
+        return $this->id;
+    }
+
+    public function getMember(): Member
+    {
+        return $this->member;
+    }
+
+    public function getCreateDate(): \DateTimeImmutable
+    {
+        return $this->createDate;
+    }
+
+    public function getContent(): Content
+    {
+        return $this->content;
+    }
+
+    public function getPrice(): Price
+    {
+        return $this->price;
+    }
 }
