@@ -134,6 +134,10 @@ class Lot
         }
 
         $this->bids->add(new Bid($this, $member, $price, $date));
+
+        if ($this->price->getBlitz() && $price >= $this->price->getBlitz()) {
+            $this->close($date);
+        }
     }
 
     public function close(\DateTimeImmutable $date): void

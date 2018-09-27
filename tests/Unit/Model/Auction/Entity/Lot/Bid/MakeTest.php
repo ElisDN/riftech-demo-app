@@ -139,6 +139,21 @@ class MakeTest extends TestCase
         $lot->makeBid($member, 200, new \DateTimeImmutable());
     }
 
+    public function testMoreThanBlitzPrice(): void
+    {
+        $price = new Price(100, 600);
+        $lot = $this->buildActiveLot($price);
+
+        $member1 = (new MemberBuilder())->build();
+        $lot->makeBid($member1, 500, new \DateTimeImmutable());
+
+        $member2 = (new MemberBuilder())->build();
+        $lot->makeBid($member2, 700, new \DateTimeImmutable());
+
+        self::assertTrue($lot->isClosed());
+        self::assertEquals($member2, $lot->getWinner()->getMember());
+    }
+
     private function buildActiveLot($price): Lot
     {
         $owner = (new MemberBuilder())->build();
