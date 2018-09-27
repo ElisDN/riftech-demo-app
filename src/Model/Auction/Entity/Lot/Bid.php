@@ -38,6 +38,11 @@ class Bid
         return $this->member === $member;
     }
 
+    public function getMember(): Member
+    {
+        return $this->member;
+    }
+
     public function getPrice(): int
     {
         return $this->price;

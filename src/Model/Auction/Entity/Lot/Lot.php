@@ -12,6 +12,7 @@ class Lot
     private const STATUS_DRAFT = 'draft';
     private const STATUS_ON_MODERATION = 'on_moderation';
     private const STATUS_ACTIVE = 'active';
+    private const STATUS_CLOSED = 'closed';
 
     /**
      * @var LotId
@@ -57,6 +58,14 @@ class Lot
      * @var ArrayCollection|Bid[]
      */
     private $bids;
+    /**
+     * @var \DateTimeImmutable|null
+     */
+    private $closeDate;
+    /**
+     * @var Bid|null
+     */
+    private $winner;
 
     public function __construct(LotId $id, Member $member, \DateTimeImmutable $date, Content $content, Price $price)
     {
@@ -127,6 +136,20 @@ class Lot
         $this->bids->add(new Bid($this, $member, $price, $date));
     }
 
+    public function close(\DateTimeImmutable $date): void
+    {
+        if (!$this->isActive()) {
+            throw new \DomainException('Lot is not active.');
+        }
+
+        if ($this->bids->count()) {
+            $this->winner = $this->bids->last();
+        }
+
+        $this->status = self::STATUS_CLOSED;
+        $this->closeDate = $date;
+    }
+
     public function getCurrentPrice(): int
     {
         if ($this->bids->count()) {
@@ -160,6 +183,11 @@ class Lot
     public function isActive(): bool
     {
         return $this->status === self::STATUS_ACTIVE;
+    }
+
+    public function isClosed(): bool
+    {
+        return $this->status === self::STATUS_CLOSED;
     }
 
     public function getId(): LotId
@@ -205,5 +233,15 @@ class Lot
     public function getRejectReason(): ?string
     {
         return $this->rejectReason;
+    }
+
+    public function getCloseDate(): ?\DateTimeImmutable
+    {
+        return $this->closeDate;
+    }
+
+    public function getWinner(): ?Bid
+    {
+        return $this->winner;
     }
 }
