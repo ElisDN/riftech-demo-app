@@ -9,6 +9,7 @@ use App\Model\Auction\Entity\Member\Member;
 class Lot
 {
     private const STATUS_DRAFT = 'draft';
+    private const STATUS_ON_MODERATION = 'on_moderation';
     private const STATUS_ACTIVE = 'active';
 
     /**
@@ -35,6 +36,10 @@ class Lot
      * @var string
      */
     private $status;
+    /**
+     * @var \DateTimeImmutable|null
+     */
+    private $onModerationDate;
 
     public function __construct(LotId $id, Member $member, \DateTimeImmutable $date, Content $content, Price $price)
     {
@@ -46,9 +51,20 @@ class Lot
         $this->status = self::STATUS_DRAFT;
     }
 
+    public function sendToModeration(\DateTimeImmutable $date): void
+    {
+        $this->status = self::STATUS_ON_MODERATION;
+        $this->onModerationDate = $date;
+    }
+
     public function isDraft(): bool
     {
         return $this->status === self::STATUS_DRAFT;
+    }
+
+    public function isOnModeration(): bool
+    {
+        return $this->status === self::STATUS_ON_MODERATION;
     }
 
     public function isActive(): bool
@@ -79,5 +95,10 @@ class Lot
     public function getPrice(): Price
     {
         return $this->price;
+    }
+
+    public function getOnModerationDate(): ?\DateTimeImmutable
+    {
+        return $this->onModerationDate;
     }
 }
