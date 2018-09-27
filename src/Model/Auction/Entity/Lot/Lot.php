@@ -40,6 +40,10 @@ class Lot
      * @var \DateTimeImmutable|null
      */
     private $onModerationDate;
+    /**
+     * @var \DateTimeImmutable|null
+     */
+    private $publishDate;
 
     public function __construct(LotId $id, Member $member, \DateTimeImmutable $date, Content $content, Price $price)
     {
@@ -58,6 +62,16 @@ class Lot
         }
         $this->status = self::STATUS_ON_MODERATION;
         $this->onModerationDate = $date;
+    }
+
+    public function moderate(\DateTimeImmutable $date): void
+    {
+        if (!$this->isOnModeration()) {
+            throw new \DomainException('Lot is not on moderation.');
+        }
+        $this->status = self::STATUS_ACTIVE;
+        $this->onModerationDate = null;
+        $this->publishDate = $date;
     }
 
     public function isDraft(): bool
@@ -103,5 +117,10 @@ class Lot
     public function getOnModerationDate(): ?\DateTimeImmutable
     {
         return $this->onModerationDate;
+    }
+
+    public function getPublishDate(): ?\DateTimeImmutable
+    {
+        return $this->publishDate;
     }
 }
