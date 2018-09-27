@@ -25,4 +25,19 @@ class Member
         $this->email = $email;
         $this->name = $name;
     }
+
+    public function getId(): MemberId
+    {
+        return $this->id;
+    }
+
+    public function getName(): Name
+    {
+        return $this->name;
+    }
+
+    public function getEmail(): Email
+    {
+        return $this->email;
+    }
 }
