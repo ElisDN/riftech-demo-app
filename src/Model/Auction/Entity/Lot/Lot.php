@@ -45,6 +45,10 @@ class Lot
      */
     private $publishDate;
     /**
+     * @var \DateTimeImmutable|null
+     */
+    private $updateDate;
+    /**
      * @var string|null
      */
     private $rejectReason;
@@ -57,6 +61,14 @@ class Lot
         $this->content = $content;
         $this->price = $price;
         $this->status = self::STATUS_DRAFT;
+    }
+
+    public function edit(Content $content): void
+    {
+        if (!$this->isDraft() && !$this->isOnModeration()) {
+            throw new \DomainException('Unable to edit not a draft.');
+        }
+        $this->content = $content;
     }
 
     public function sendToModeration(\DateTimeImmutable $date): void
@@ -129,6 +141,11 @@ class Lot
     public function getOnModerationDate(): ?\DateTimeImmutable
     {
         return $this->onModerationDate;
+    }
+
+    public function getUpdateDate(): ?\DateTimeImmutable
+    {
+        return $this->updateDate;
     }
 
     public function getPublishDate(): ?\DateTimeImmutable
