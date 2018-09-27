@@ -44,6 +44,10 @@ class Lot
      * @var \DateTimeImmutable|null
      */
     private $publishDate;
+    /**
+     * @var string|null
+     */
+    private $rejectReason;
 
     public function __construct(LotId $id, Member $member, \DateTimeImmutable $date, Content $content, Price $price)
     {
@@ -71,7 +75,15 @@ class Lot
         }
         $this->status = self::STATUS_ACTIVE;
         $this->onModerationDate = null;
+        $this->rejectReason = null;
         $this->publishDate = $date;
+    }
+
+    public function reject(string $reason): void
+    {
+        $this->status = self::STATUS_DRAFT;
+        $this->rejectReason = $reason;
+        $this->publishDate = null;
     }
 
     public function isDraft(): bool
@@ -122,5 +134,10 @@ class Lot
     public function getPublishDate(): ?\DateTimeImmutable
     {
         return $this->publishDate;
+    }
+
+    public function getRejectReason(): ?string
+    {
+        return $this->rejectReason;
     }
 }
