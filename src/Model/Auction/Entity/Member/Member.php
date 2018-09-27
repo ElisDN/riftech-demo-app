@@ -26,6 +26,12 @@ class Member
         $this->name = $name;
     }
 
+    public function edit(Email $email, Name $name): void
+    {
+        $this->email = $email;
+        $this->name = $name;
+    }
+
     public function getId(): MemberId
     {
         return $this->id;
