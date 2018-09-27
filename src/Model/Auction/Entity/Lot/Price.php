@@ -20,4 +20,14 @@ class Price
         $this->start = $start;
         $this->blitz = $blitz;
     }
+
+    public function getStart(): int
+    {
+        return $this->start;
+    }
+
+    public function getBlitz(): ?int
+    {
+        return $this->blitz;
+    }
 }
