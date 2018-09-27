@@ -28,6 +28,9 @@ class CreateTest extends TestCase
             $price = new Price(1000, 35000)
         );
 
+        self::assertTrue($lot->isDraft());
+        self::assertFalse($lot->isActive());
+
         self::assertEquals($id, $lot->getId());
         self::assertEquals($member, $lot->getMember());
         self::assertEquals($date, $lot->getCreateDate());

@@ -8,6 +8,9 @@ use App\Model\Auction\Entity\Member\Member;
 
 class Lot
 {
+    private const STATUS_DRAFT = 'draft';
+    private const STATUS_ACTIVE = 'active';
+
     /**
      * @var LotId
      */
@@ -28,6 +31,10 @@ class Lot
      * @var Price
      */
     private $price;
+    /**
+     * @var string
+     */
+    private $status;
 
     public function __construct(LotId $id, Member $member, \DateTimeImmutable $date, Content $content, Price $price)
     {
@@ -36,6 +43,17 @@ class Lot
         $this->createDate = $date;
         $this->content = $content;
         $this->price = $price;
+        $this->status = self::STATUS_DRAFT;
+    }
+
+    public function isDraft(): bool
+    {
+        return $this->status === self::STATUS_DRAFT;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->status === self::STATUS_ACTIVE;
     }
 
     public function getId(): LotId
