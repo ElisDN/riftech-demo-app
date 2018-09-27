@@ -53,6 +53,9 @@ class Lot
 
     public function sendToModeration(\DateTimeImmutable $date): void
     {
+        if (!$this->isDraft()) {
+            throw new \DomainException('Lot is not a draft.');
+        }
         $this->status = self::STATUS_ON_MODERATION;
         $this->onModerationDate = $date;
     }

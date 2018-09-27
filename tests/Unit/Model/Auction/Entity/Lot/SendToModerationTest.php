@@ -25,4 +25,16 @@ class SendToModerationTest extends TestCase
         self::assertTrue($lot->isOnModeration());
         self::assertEquals($date, $lot->getOnModerationDate());
     }
+
+    public function testIsNotDraft(): void
+    {
+        $member = (new MemberBuilder())->build();
+        $lot = (new LotBuilder($member))->build();
+
+        $lot->sendToModeration(new \DateTimeImmutable());
+
+        $this->expectExceptionMessage('Lot is not a draft.');
+
+        $lot->sendToModeration(new \DateTimeImmutable());
+    }
 }
