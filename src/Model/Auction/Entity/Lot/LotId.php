@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Model\Auction\Entity\Member;
+namespace App\Model\Auction\Entity\Lot;
 
+use Ramsey\Uuid\Uuid;
 use Webmozart\Assert\Assert;
 
-class TenantId
+class LotId
 {
     private $id;
 
@@ -14,6 +15,11 @@ class TenantId
     {
         Assert::notEmpty($id);
         $this->id = $id;
+    }
+
+    public static function next(): self
+    {
+        return new self(Uuid::uuid4()->toString());
     }
 
     public function getId(): string
